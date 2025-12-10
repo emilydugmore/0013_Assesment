@@ -1,0 +1,329 @@
+---
+date: last-modified
+bibliography: bio.bib
+csl: harvard-cite-them-right.csl
+title: Title
+execute:
+  echo: false
+  freeze: true
+format:
+  html:
+    code-copy: true
+    code-link: true
+    toc: true
+    toc-title: On this page
+    toc-depth: 2
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+  pdf:
+    include-in-header:
+      text: |
+        \addtokomafont{disposition}{\rmfamily}
+    mainfont: "Times New Roman"
+    sansfont: "Arial"
+    monofont: "Courier New"
+    papersize: a4
+    geometry:
+      - top=25mm
+      - left=40mm
+      - right=30mm
+      - bottom=25mm
+      - heightrounded
+    toc: false
+    number-sections: false
+    colorlinks: true
+    highlight-style: github
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .qmd
+      format_name: quarto
+      format_version: '1.0'
+      jupytext_version: 1.15.2
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+::: {.content-hidden}
+::: {.callout-note!!!}
+## Setup Instructions for Team!!!!
+If you are running this locally (Windows/Mac) and see a "Font not found" error:  
+1. Please install **Spectral**, **Roboto Flex**, and **Liberation Mono** fonts manually.  
+2. OR, temporarily comment out the font settings in the YAML header above.  
+**Note:** This file will render perfectly in the John's Docker container as these fonts are pre-installed there.
+:::
+:::
+
+<!-- Cover Start-->
+\begin{titlepage}  
+\end{titlepage}  
+DO IT LATER  
+<!-- Cover Over -->
+
+# Title 
+## Date
+place holder: add Airbnb.png  
+
+{{< pagebreak >}}
+
+## Declaration of Authorship {.unnumbered .unlisted}  
+**Date:**   
+**Student Details:**    
+Github Group_Work  
+
+
+## Priorities for Feedback  
+Keep it or remove it?  
+
+{{< pagebreak >}}
+
+# **INTRODUCTION**  
+place holder: add Airbnb.png 
+
+
+{{< pagebreak >}}
+#### **Data and methodologies**  
+Words Limitation.
+
+::: {.callout-tip}
+@Emily: **Other limitations (NYC paper)**  
+Our investigation uses the Inside Airbnb (IA) dataset to analyse Airbnb activity for more than **xxx** million listings in London. 
+:::
+
+{{< pagebreak >}}
+<!-- Cover Over Part 01 Data Loading Step1-8  
+Part 02 Data Cleaning Step1-2  -->
+# **Queation 1: Is Airbnb out of control in London?**  
+##### **Growth of full-time rentals**  
+*5 Figures*
+
+::: {.callout-tip}
+@Nadia **Work in progress**  
+:::
+
+<!-- Step 01-03 -->
+#### **Figure 1.1** | Growth of Airbnb Listings  
+**Summary Figure 1.1**  
+
+::: {.callout-tip}
+> https://www.london.gov.uk/programmes-strategies/planning/implementing-london-plan/monitoring-london-plan 
+:::
+
+
+<!-- Step 04 -->
+#### **Figure 1.2** | Growth of Airbnb Listings  
+**Summary Figure 02**  
+
+::: {.callout-tip}
+@Nadia (This parragraph needs more work)
+:::
+
+<!-- Step 05-08 -->
+#### **Figure 1.3** | Scatterplot Airbnb vs Private Rent Monthly revenue by bedroom category  
+**Summary Figure 1.3**  
+
+
+<!-- Step 09-10 -->
+
+#### **Figure 1.4** | Rent Gap (Airbnb vs Private Rent) Two Bedroom Units  
+**Summary Figure 1.4**  
+{{< pagebreak >}}
+
+<!-- Step 11 -->
+
+#### **Figure 1.5** | Rent gap in Camden, by bedroom category  
+**Summary Figure 1.5**   
+
+::: {.callout-tip}
+@Nadia Hide it?
+*** it would be good to have an approx stat here on the % of airbnbs that are operating with a temporary accomodation license - presumably almost no listings have this ***
+*** It would be great to find a stat here that says x % of airbnbs are used for short term rather than long term rentals to back up our assumptions ***
+:::
+
+!!!equation on quarto
+
+::: {.callout-tip}  
+**Choose one:**  
+
+A:  
+The occupancy rate is estimated using the San Francisco Model provided by Inside Airbnb:  
+$$
+O = \frac{R}{r} \times N_{min}
+$$
+
+**Where:**  
+
+*   $O$: Estimated Occupancy Rate (last 12 months)  
+*   $R$: Total Number of Reviews (last 12 months)  
+*   $r$: Review Rate (assumed percentage of guests who   leave a review, typically 50%)  
+*   $N_{min}$: Average Minimum Nights per stay  
+
+This formula assumes a standard review conversion rate to estimate total bookings from visible reviews.  
+
+B:
+$$
+\text{Occupancy}_{L12M} = \frac{\text{Reviews}_{L12M}}{\text{Review Rate}} \times \text{Avg. Min Nights}
+$$
+
+:::
+
+
+#### **Assumptions**
+
+::: {.callout-tip}
+@Nadia Keep it? For mayor or teamates?
+#### **Assumptions**
+*  
+*  
+*  
+*  
+:::
+
+
+{{< pagebreak >}}
+
+#### **Illegal revenue paragraph**
+<!-- Step 1-3 -->
+#### **Paragraph for illegal activity**
+
+::: {.callout-tip}
+@Emily More interestingly, **xxx**
+
+50% of the illegal revenue is attributable to only 171 individual hosts (5% of illegal hosts). 
+:::
+
+{{< pagebreak >}}
+
+# **Question 2: How many professional landlords are there?**
+*4 Figures*
+
+::: {.callout-tip}
+@ICY Tabata reference 01
+Following the literature [1]
+>[1] Shabrina, Z.; Arcaute, E.; Batty, M. (2022), Airbnb and its potential impact on the London housing market, Urban Studies.
+- / > render difference
+:::
+
+#### **Figure 2.1** | Histogram of number of listings per professional host
+**Following from the Output:**
+
+::: {.callout-tip}
+@ICY Tabata reference 02
+> [2] "What’s required to be a Superhost" (https://www.airbnb.co.uk/help/article/829). 
+- / > render difference
+:::
+
+#### **Figure 2.2** | Distribution of total estimated revenue of professional hosts
+
+#### **Figure 2.3** | Spatial distribution of the listings of the top6 professional landlords with the most listings
+
+#### **Figure 2.4** | Correlation between the superhost condition and the number of listings
+
+
+
+# **Question 3: How many properties would be affected by the opposition’s proposal?**
+**The workflow:**
+*3 Figures + 1 Table*
+
+<!-- Datasets used  
+Step 01-06 -->
+#### **Figure 3.1** | Average Airbnb Revenue vs Average Council Tax per Borough 
+**Summary Figure 3.1** 
+
+<!-- Step 07-09 -->
+#### **Figure 3.2** | Linear Relationship Between Revenue and Profit Loss
+**Summary Figure 3.2** 
+
+<!-- Step 10 -->
+#### **Figure 3.3** | Table + Map of Average Profit Loss per Borough 
+**Summary Figure 3.3** 
+
+
+**Short General Conclusion on discussion 3:**
+
+# **Question 4: What are the likely pros and cons of the opposition’s proposal (for the Mayor, residents, and the city)?**
+
+::: {.callout-tip}
+@ICY (citation)
+:::
+
+**Effects of the opposition proposal for different actors**  
+**For the Mayor**  
+>**Pros:**  
+> -   
+>**Cons:**  
+> -   
+
+**For the Residents:**  
+>**Pros:**  
+> -   
+>**Cons:**  
+> -  
+
+**For the City:**  
+>**Pros:**  
+> -   
+>**Cons:**  
+> -   
+
+**Overall judgement:**  
+
+::: {.callout-tip}
+@ICY (citation) (Municipality of Amsterdam, 2025)
+:::
+
+{{< pagebreak >}}
+
+
+# **Question 5: Can the story be reframed as a positive one about social mobility or housing opportunity?**
+::: {.callout-tip}
+@ICY (citation)
+
+>[1] https://www.londoncouncils.gov.uk/
+>
+>[2] Dayne Lee, How Airbnb Short-Term Rentals Exacerbate Los Angeles's Affordable Housing Crisis: Analysis and Policy Recommendations. 
+:::
+
+{{< pagebreak >}}
+
+# References
+
+Introduction  
+1. Wachsmuth, D., D. Chaney, D. Kerrigan, A. Shillolo, and R. Basalaev-Binder. 2018. “The High Cost of Short-Term Rentals in New York City.” McGill University. https://www.mcgill.ca/newsroom/files/newsroom/channels/attach/airbnb-report.pdf.  
+2. Quattrone, Giovanni, Davide Proserpio, Daniele Quercia, Licia Capra, and Mirco Musolesi. 2016. “Who Benefits from the ‘Sharing’ Economy of Airbnb?” In Proceedings of the 25th International Conference on World Wide Web, 1385–94. WWW ’16. Republic; Canton of Geneva, CHE: International World Wide Web Conferences Steering Committee. https://doi.org/10.1145/2872427.2874815.  
+3. https://insideairbnb.com/data-assumptions/ 
+
+Q1  
+1. https://www.london.gov.uk/programmes-strategies/planning/implementing-london-plan/monitoring-london-plan 
+2. https://dl.acm.org/doi/10.1145/2872427.2874815 Who Benefits from the "Sharing" Economy of Airbnb?
+
+
+Q2  
+1. https://journals.sagepub.com/doi/10.1177/0042098020970865  Airbnb and its potential impact on the London housing market
+2. https://www.airbnb.co.uk/help/article/829
+
+Q3  
+
+
+Q4  
+1. London Plan Annual Monitoring Report 19 2021/22  
+2. https://www.nyc.gov/site/specialenforcement/registration-law/registration.page
+3. https://www.amsterdam.nl/en/housing/holiday-rentals/reporting-holiday-rentals/
+
+
+Q5  
+1. https://www.londoncouncils.gov.uk/
+2. How Airbnb Short-Term Rentals Exacerbate Los Angeles's Affordable Housing Crisis  
+
+
+(Parenthetical Citation)A: Most of the data comes from online sources [@insideairbnb].  
+
+(Narrative Citation)B: According to @insideairbnb, the data is open source.  
+
+Previous studies have confirmed this trend [@smith2021analysis; @doe2020airbnb].  
+
+Recent studies have questioned the accuracy of the data used in Airbnb research [@alsudaisIncorrectDataWidely2021].  
+
