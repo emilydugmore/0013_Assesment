@@ -111,16 +111,17 @@ jupyter:
 
     \textbf{\texttt{>> SECTION 3: INTELLIGENCE REQUEST (FEEDBACK)}} \\
     \hline
-    \vspace{0.2cm}
-    \textbf{HQ is requested to analyze the following sectors:}
+    \vspace{0.1cm}
+    \textbf{HQ is requested to provide critical analysis on the following sectors:}
     \begin{itemize}
-        \item \textbf{Methodology Verification}: Were we unsure if our method for imputing missing revenue data was sound?
-        \item \textbf{Visual Decryption}: Does the color scheme for the choropleth map (Figure 3.3) effectively communicate the spatial pattern?
-        \item \textbf{Narrative Logic}: Is the logical flow of our 'Policy Recommendation' section clear?
+    \item \textbf{Methodology Verification (Profit Loss Model)}: Our core analysis simulates the financial impact of the council tax proposal (Figure 3.3). We assumed that council tax is a valid proxy for operating costs. Is this simplification robust for a policy briefing, or are there standard models for this that we should have considered?
+
+    \item \textbf{Visual Decryption (Landlord Concentration)}: To illustrate the dominance of professional landlords, we mapped the top 6 operators (Figure 2.3). Is this multi-plot layout effective in conveying market concentration, or would a single, aggregated heatmap be more impactful for a mayoral audience?
+
+    \item \textbf{Narrative Logic (Policy Recommendation)}: Our central argument is that the proposed flat tax increase is a blunt instrument that disproportionately affects smaller operators in outer boroughs. Does our narrative, particularly the summaries for Figures 3.1-3.3, build a convincing case for this conclusion?
     \end{itemize}
     \vspace{0.2cm}
-    \\
-    \hline
+    \\ \hline
 \end{tabular}
 \end{center}
 
@@ -143,22 +144,22 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # --- MI6 Theme Definition ---
-mi6_red = '#8B0000'    # 也就是 AgencyRed
-mi6_black = '#404040'  # 也就是 AgencyBlack
-mi6_grey = '#E0E0E0'   # 浅灰色背景
+mi6_red = '#8B0000'    #
+mi6_black = '#3a3a3aff'  
+mi6_grey = '#E0E0E0'   
 
-# 设置全局绘图风格
+
 plt.rcParams.update({
-    'font.family': 'sans-serif',        # 默认用无衬线
-    'text.color': mi6_black,            # 文字颜色
-    'axes.labelcolor': mi6_black,       # 坐标轴标签颜色
-    'xtick.color': mi6_black,           # 刻度颜色
+    'font.family': 'sans-serif',      
+    'text.color': mi6_black,        
+    'axes.labelcolor': mi6_black,       
+    'xtick.color': mi6_black,           
     'ytick.color': mi6_black,
-    'axes.edgecolor': mi6_black,        # 边框颜色
-    'axes.titlesize': 10,               # 标题大小
-    'axes.titleweight': 'bold',         # 标题加粗
+    'axes.edgecolor': mi6_black,        
+    'axes.titlesize': 12,               
+    'axes.titleweight': 'bold',         
     
-    # 默认颜色循环 (画多条线时自动用的颜色)
+
     'axes.prop_cycle': plt.cycler(color=[mi6_red, mi6_black, '#555555']),
 })
 ```
@@ -205,14 +206,16 @@ This report is motivated by claims that Airbnb is ‘out of control’ in London
 2.  How many professional landlords are there?  
 3.  How many properties would be affected by the proposal?  
 4.  What are the likely pros and cons of the proposal (for the Mayor, residents, and the city)?  
-5.  Can the story be reframed as a positive one about social mobility or housing opportunity?  
-
-Our investigation uses the Inside Airbnb (@insideairbnb) dataset to analyse Airbnb activity for more than **xxx** million listings in London. To determine the impact of Airbnb on the housing market, we use average monthly rents in private rental market aggregated at the borough level. The potential impact of introducing higher Council Tax rates to professional landlords is explored using Council Tax data at the borough level.  
+5.  Is it possible that Airbnb is contributing positively to social mobility or housing opportunities?  
 
 
 #### **Data and methodologies**
 
-Our investigation relies heavily on the Inside Airbnb dataset, which scrapes publicly available listing information from the Airbnb platform. The Inside Airbnb dataset is commonly used in research, presumably because it is one of the only publicly-accessible datasets currently available. However, it is not without serious limitations which need consideration. Importantly, the dataset acts as a snapshot of listing information as it appeared on the day of scraping, making much of the data unreliable because the host could change these inputs (such as price and minimum-stay requirements) at any given moment. In 2015, Airbnb stopped disclosing the difference between nights that are booked by guests and nights that are ‘blacked-out’ by hosts, making it impossible to precisely measure occupancy and revenue (@mcgilluniversity). Where assumptions are made, our findings provide conservative estimates for occupancy and revenue – these values are likely much higher.  
+Our investigation uses listing data collected by Inside Airbnb  – an independent, non-commercial website that scrapes publicly available information from the Airbnb platform (@insideairbnb). The IA dataset offers a more “transparent” view of Airbnb activity, and is commonly used in research. However, it is not without serious limitations which need consideration.  
+
+Importantly, the dataset acts as a snapshot of listing information as it appeared on the day of scraping, making much of the data unreliable because hosts could modify listing information at any moment. In 2015, Airbnb stopped disclosing the difference between nights that are booked by guests and nights that are ‘blacked-out’ by hosts, making it impossible to precisely measure occupancy and revenue. We use the estimated occupancy and revenue generated from the IA occupancy model (@mcgilluniversity). The coordinates for listings in the IA dataset are shifted 150m in a random direction from the actual address of the listing. It is important to note that listings which fall close to borough boundaries may have been shifted into a different borough, slightly affecting the precision of the results.  
+
+To determine the impact of Airbnb on the housing market, we use average monthly rents in the private rental market (July 2023 - June 204). Council Tax data from 2024 is used to investigate the potential impact of introducing higher Council Tax rates to professional landlords. Both datasets are aggregated at the borough level – a spatial unit which also acts as administrative boundaries – making our results relevant for Local Planning Authorities and actionable for local policies.  
 
 {{< pagebreak >}}
 
@@ -759,7 +762,7 @@ display(borough_shp.head())
 
 Assessing whether Airbnb is “out of control” in London requires defining what this means. In this analysis, Airbnb becomes out of control when short-term rentals grow large enough to **(1) reduce the supply of long-term housing, (2) generate strong financial incentives to convert homes away from residential use, and (3) exceed the city’s regulatory capacity—particularly the 90-night annual limit for short-term lets.**
 
-Based on the analysis, Airbnb does not appear uniformly “out of control” across London, but its impact is clearly concentrated, uneven, and significant in key areas of the city, particularly in Inner London and in larger family-sized homes.
+Based on the analysis, Airbnb does not appear uniformly “out of control” across London, but its impact is clearly concentrated, uneven, and significant in key areas of the city, particularly in Inner London and in larger family-sized homes.  
 
 ::: {.content-hidden}
 ** Work in progress**
@@ -935,52 +938,53 @@ count_inner = df_inner[df_inner["year_first_review"] != 2025]["year_first_review
 
 
 # Plot: Airbnb listings added per year in All London vs Inner London
-plt.figure(figsize=(12, 6)) #
+plt.figure(figsize=(11, 6)) #
 
-# 1. MI6 
-mi6_red = '#6e0f0fff'
-mi6_blue = '#313131ff'
+# MI6 
+mi6_red = '#8B0000'    # Inner London (The "Threat")
+mi6_grey = '#606060'   # Outer London (The "Context")
 
-# Bars for all London 
-plt.bar(
-    count_all.index.astype(str),
-    count_all.values,
-    label="All London",
-    color=mi6_blue,
-    alpha=0.6 
-)
+count_all, count_inner = count_all.align(count_inner, fill_value=0)
+count_outer = count_all - count_inner
 
-# Bars for inner London overlapping 
+
+# 1. Inner London 
 plt.bar(
     count_inner.index.astype(str),
     count_inner.values,
     label="Inner London",
-    color=mi6_red,
-    alpha=0.8
+    color=mi6_red
 )
 
-# 2. 
-plt.xlabel("Year", fontsize=10, fontweight='bold')
-plt.ylabel("Listings Added", fontsize=10, fontweight='bold')
+# 2. Outer London 
+plt.bar(
+    count_outer.index.astype(str),
+    count_outer.values,
+    label="Outer London",
+    color=mi6_grey,
+    bottom=count_inner.values 
+)
+
+
+plt.xlabel("Year", fontsize=12, fontweight='bold')
+plt.ylabel("Listings Added", fontsize=12, fontweight='bold')
 plt.title(
-    "Growth of Airbnb Listings: All London vs Inner London", 
-    fontsize=12, 
+    "Growth of Airbnb Listings: Inner vs Outer London", 
+    fontsize=14, 
     fontweight='bold', 
-    pad=15
+    pad=20
 )
-plt.xticks(rotation=45, ha='right', fontsize=10)
-plt.yticks(fontsize=10)
-
-# 3. 放
-plt.legend(fontsize=12, loc='upper left', frameon=True)
+plt.xticks(rotation=45, ha='right', fontsize=11)
+plt.yticks(fontsize=11)
+plt.legend(fontsize=12, loc='upper left', frameon=True, shadow=True)
 
 ax = plt.gca()
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
-
 plt.grid(axis="y", alpha=0.3)
 plt.tight_layout()
 plt.show()
+
 # ---- Output data ----
 # df_inner: A df containing listings located only in the boroughs of Inner London
 # ---- Output Figure ----
@@ -1334,11 +1338,13 @@ plt.show()
 **Summary Figure 1.3**   
 
 *   **Small Units (Studio/1-Bed)**: Returns are roughly equal between Airbnb and private rent. The points cluster along the diagonal line.
+
 &nbsp;
-&nbsp;
+
 *   **Large Units (2-4+ Beds)**: The gap widens significantly. Airbnb revenue is much higher than private rent.
+
 &nbsp;
-&nbsp;
+
 *   **Implication**: This creates a strong financial incentive to convert family-sized homes into short-term rentals, potentially hurting local housing supply.
 
 
@@ -1453,7 +1459,7 @@ rent_values = row[rent_cols].values
 x = np.arange(len(categories))
 width = 0.35
 
-plt.figure(figsize=(12,6))
+plt.figure(figsize=(12,8))
 
 plt.bar(x - width/2, airbnb_values, width, label="Airbnb Revenue (£/month)")
 plt.bar(x + width/2, rent_values, width, label="Private Rent (£/month)")
@@ -1872,7 +1878,7 @@ plt.figure(figsize=(10,5))
 plt.hist(prof_land.values, 
          bins=bins, 
          edgecolor='white', 
-         color="#000080") 
+         color="#404040") 
 
 plt.yscale('log')
 
@@ -1903,11 +1909,12 @@ plt.show()
 ```
 
 &nbsp;
+
 &nbsp;
+
 &nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
+
+
 According to our assumptions, there are **15 050 professional hosts**, and it looks like most of them have less than 100 listings. The hosts with more listings are excepmtions, but it's still important to include them in the analysis since these cases are a signal that the system is, as mentioned before, "out of control".
 
 ## **Figure 2.2** | Distribution of total estimated revenue of professional hosts
@@ -2004,7 +2011,9 @@ plt.show()
 ```
 
 &nbsp;
+
 &nbsp;
+
 &nbsp;
 
 **Following from the Output:** 
@@ -2014,6 +2023,10 @@ Knowing which ones are the professional landlords would help deepen into finding
 - Calculating the estimated revenue per host in a year  
 - Plotting the spatial distribution of the top 6 professional hosts by number of listings  
 - Finding if the number of listings per professional host is correlated with being a "superhost"(@airbnbhelpcenter), a sign of high-quality service  
+
+&nbsp;
+
+&nbsp;
 
 These outcomes help reveal whether their activity is driven by commercial and profit-oriented practices.  
 
@@ -2167,8 +2180,13 @@ else:
 ```
 
 
+&nbsp;
+&nbsp;
+
+
+
 ::: {.callout-important icon="false"}
-## INTELLIGENCE BRIEF: STATISTICAL CORRELATION
+## **INTELLIGENCE BRIEF: STATISTICAL CORRELATION**
 
 **TARGET**: Correlation between *Superhost Status* and *Listings Count*.
 
@@ -2180,14 +2198,14 @@ The correlation is negligible (close to zero), suggesting Superhost status is **
 :::
 
 &nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
+
 &nbsp;
 
-The plots are showing us that the listings of the top 6 professional landlords are spread across London, with some of them being clustered around the central area and in high value boroughs. This spatial distribution, plus the portafolio size and total estimated revenue for all the listings, indicates that some of these hosts are actually comercial operators and not just individuals sharing their houses as the original porpouse of AirBnb was.  
 
-In simple terms, our analysis shows that having many Airbnb listings does not mean a host provides better service. This means that having an extensive portfolio does not necessarily indicate higher-quality service, and that the number of listings is more driven by a commercial, and veru profitable as seen in the analysis, business model.  
+- The plots show that the top 6 professional landlords are spread across London, with some clustered in central areas and high-value boroughs. This spatial distribution, along with the portfolio size and total estimated revenue for all the listings, indicates that some of these hosts are actually commercial operators, not just individuals sharing their homes as Airbnb was initially intended.  
+
+- In simple terms, our analysis shows that having many Airbnb listings does not mean a host provides better service. This means that having an extensive portfolio does not necessarily indicate higher-quality service, and that commercial, very profitable listings drive the number of listings, as the analysis shows.  
+
 
 {{< pagebreak >}}
 
@@ -2449,7 +2467,7 @@ tax_vals = borough_summary['avg_council_tax'].values      # average council tax 
 n_vals   = borough_summary['n_listings'].values           # number of listings per borough
 
 # Create the base figure and first axis (for revenue)
-fig, ax1 = plt.subplots(figsize=(14, 6))
+fig, ax1 = plt.subplots(figsize=(14, 8))
 
 # Plot Line 1: Average Airbnb revenue per borough (left y-axis)
 rev_line = ax1.plot(
@@ -2584,15 +2602,11 @@ print(
 ```
 
 &nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
 
 **Summary Figure 3.1**   
 
-- Average Airbnb revenue is much higher than council tax (≈ £28k vs ≈ £1.9k). The map shows a clear mismatch: the highest-earning boroughs (Westminster, Kensington & Chelsea, City of London) pay some of the lowest council taxes, while outer boroughs with weak Airbnb income face higher council tax and very few listings. 
-- In short, Airbnb profitability is concentrated in the centre, and council tax has almost no bite where the profits are highest.  
+- Average Airbnb revenue is much higher than council tax (≈ £28k vs ≈ £1.9k). The map shows an apparent mismatch: the highest-earning boroughs (Westminster, Kensington & Chelsea, City of London) pay some of the lowest council taxes, while outer boroughs with weak Airbnb income face higher council tax and very few listings. In short, Airbnb profitability is concentrated in the centre, and council tax has almost no bite where the profits are highest.  
+
 
 
 ```{python}
@@ -2818,6 +2832,7 @@ if len(x) > 1:
 ```
 
 &nbsp;
+
 &nbsp;
 
 ::: {.callout-important icon="false"}
@@ -2840,63 +2855,59 @@ if 'intercept' in locals() and 'slope' in locals():
   print("$$")
 else:
   print("*(Insufficient data to derive formula)*")
-  ```
+```
 
 ::: 
 
 &nbsp;
+
 &nbsp;
 
 **Summary Figure 3.2**   
 
-- Low-earning listings get hit with the opposition proposal. And high-earning listings aren't affected.   
-- When revenue is small, a 40% tax increase can wipe out a big chunk of profit — sometimes almost all of it.  
-- But once revenue rises, council tax becomes tiny in comparison, so the profit loss drops close to zero.  
+- Low-earning listings get hit with the opposition proposal. And high-earning listings aren't affected. When revenue is small, a 40% tax increase can wipe out a big chunk of profit — sometimes almost all of it. But once revenue rises, council tax becomes tiny in comparison, so the profit loss drops close to zero.
 
 {{< pagebreak >}}
 
 
 ## **Figure 3.3** | Map of Average Profit Loss per Borough
 
+&nbsp;
+
+&nbsp;
+
 ```{python}
-#| tbl-cap: "Average Profit Loss per Borough"
 #| echo: false
 #| output: asis
-# Latex format
-# Step 10 - Average Profit Loss per Borough: Table + Map
-# Steps:
-# Uses the listing-level results from Step 08 (listings_prof with profit_loss_pct).
-# Aggregates to the borough level
-# Joins those borough-level averages back onto the borough polygons.
-# Draws a choropleth map + prints the average % loss on each borough.
+#| freeze: false
 
+# ------------------------------------------------------------
+# -- Phase 1: Data Aggregation & Preparation
+# ------------------------------------------------------------
 
-# Clip profit_loss_pct to a sensible 0–100% range (0–1 as proportion)
-# Avoids weird extreme values dominating the averages.
+# Clip 'profit_loss_pct' to a 0-1 range to prevent outliers from skewing the mean.
 listings_prof['profit_loss_pct_clipped'] = (
     listings_prof['profit_loss_pct'].clip(lower=0, upper=1)
 )
 
-# Borough-level summary of how effective the policy is (on average)
+# Aggregate listing-level data to the borough level.
+# For each borough, we calculate the number of listings and the average/median profit loss.
 borough_loss_table = (
     listings_prof
     .groupby('borough_name', as_index=False)
     .agg(
-        n_listings=('id', 'count'),                         # sample size in borough
-        avg_loss_pct=('profit_loss_pct_clipped', 'mean'),   # average loss
-        median_loss_pct=('profit_loss_pct_clipped', 'median')  # median loss
+        n_listings=('id', 'count'),                       
+        avg_loss_pct=('profit_loss_pct_clipped', 'mean'),  
+        median_loss_pct=('profit_loss_pct_clipped', 'median')
     )
 )
 
-# Convert proportions to percentages and tidy names
-borough_loss_table['avg_loss_pct'] = (
-    borough_loss_table['avg_loss_pct'] * 100
-).round(1)
+# Convert proportions (0.097) to percentages (9.7) for readability.
+borough_loss_table['avg_loss_pct'] = (borough_loss_table['avg_loss_pct'] * 100).round(1)
+borough_loss_table['median_loss_pct'] = (borough_loss_table['median_loss_pct'] * 100).round(1)
 
-borough_loss_table['median_loss_pct'] = (
-    borough_loss_table['median_loss_pct'] * 100
-).round(1)
-
+# Rename columns for the final table presentation.
+# Note: The '%' symbol is escaped as '\%' to be correctly rendered in LaTeX.
 borough_loss_table = (
     borough_loss_table
     .rename(columns={
@@ -2909,83 +2920,91 @@ borough_loss_table = (
     .reset_index(drop=True)
 )
 
+# ------------------------------------------------------------
+# -- Phase 2: LaTeX Table Generation
+# ------------------------------------------------------------
+
+# Generate the raw LaTeX code from the pandas DataFrame.
+# 'escape=False' is crucial because we manually escaped the '%' in the column names.
 latex_code = borough_loss_table.to_latex(
     index=False, 
     column_format='lrrr',
-    float_format="%.1f",   # <--- delete 0，show %
+    float_format="%.1f",
     escape=False
 )
 
+# Print the raw LaTeX code. Quarto will render this into a formatted table
+# because of the '#| output: asis' option at the top of this chunk.
 
-# display(borough_loss_table)
-# \small 
-# column_format='lrrr' 
-
+# Start the 'table' environment for proper floating and captioning.
 print(r"\begin{table}[ht]")
+
+# Center the table and title.
 print(r"\centering")
-print(r"\small")  #footnotesize
-print(latex_code)  
-print(r"\vspace{1ex}")  
 
-# (Explanation)
-print(r"\begin{minipage}{0.85\textwidth}")  
-print(r"\raggedright")  
-print(r"\footnotesize")  
+# Add a manual title above the table, with vertical spacing.
+print(r"\textbf{Average Profit Loss per Borough}\\[1.5em]") 
 
+# Use a smaller font size for the table content.
+print(r"\small")
+print(latex_code)
+
+# Add a footnote below the table to explain the column names.
+print(r"\vspace{1ex}")
+print(r"\begin{minipage}{0.85\textwidth}")
+print(r"\raggedright")
+print(r"\footnotesize")
 print(r"\textit{Note:} \\")
-print(r"\textbf{Count (Pro)}: Number of professional full-time listings; \\")  
-print(r"\textbf{Avg/Med Loss (\%)}: Average and Median percentage of profit lost under the new tax policy.")  
-
+print(r"\textbf{Count (Pro)}: Number of professional full-time listings; \\")
+print(r"\textbf{Avg/Med Loss (\%)}: Average and Median percentage of profit lost under the new tax policy.")
 print(r"\end{minipage}")
 
+# Close the 'table' environment.
 print(r"\end{table}")
 ```
+
 
 ```{python}
 #| echo: false
 # Join borough polygons to the borough loss table for mapping
-borough_loss_map = borough_tax.merge(
+borough_loss_map = borough_shp.merge(
     borough_loss_table,
-    left_on='borough_name',   # from borough_tax
-    right_on='Borough',       # from borough_loss_table
+    left_on='borough_name',
+    right_on='Borough',
     how='left'
 )
 
-# Create a clean column name to plo
+# Create a clean column name to plot
 borough_loss_map['avg_loss_pct_percent'] = borough_loss_map['Avg Loss (\%)']
 
 gdf = borough_loss_map.copy() 
 
-fig, ax = plt.subplots(figsize=(6, 6))
+fig, ax = plt.subplots(figsize=(8, 8)) 
 
-# Check the actual range of average % loss across boroughs
 vmin = gdf['avg_loss_pct_percent'].min()
 vmax = gdf['avg_loss_pct_percent'].max()
 
-# print(f"Range of average loss: {vmin:.1f}% – {vmax:.1f}%")
-
-# Draw the choropleth using the real data range 
+# 2. 
 gdf.plot(
     column='avg_loss_pct_percent',
-    cmap='YlOrRd',      
-    linewidth=0.3,
-    edgecolor='#ffffffff',
+    cmap='Reds',      
+    linewidth=0.5,
+    edgecolor='white',  
     legend=True,
     vmin=vmin,
     vmax=vmax,
     legend_kwds={
         'orientation': 'horizontal', 
         'shrink': 0.7,               
-        'pad': 0.05,                 
-        'label': 'Average Profit Loss (%)', 
+        'pad': 0.01,                 
+        'label': 'Average Profit Loss (\\%)', 
     },
-    
     ax=ax
 )
 
 ax.set_axis_off()
 ax.set_title(
-    "Average Profit Loss per Borough (%)\n"
+    "Average Profit Loss per Borough (\\%)\n"
     "(Professional full-time, +40% council tax)",
     fontsize=12
 )
@@ -3013,9 +3032,10 @@ plt.tight_layout()
 # Figure 03: Choropleth map where each borough is shaded by its average
 ```
 
+
 **Summary Figure 3.3**   
 
-- we can see that average profit loss per borough ranges from about **1–5% in central boroughs** up to **10% in some outer boroughs**, meaning outer hosts are more affected by the opposition suggestion. 
+- We can see that the average profit loss per borough ranges from abou **1–5% in central boroughs** to 10% in some outer boroughs, meaning outer borough hosts are more affected by the opposition's suggestion.
 
 ```{python}
 #| output: false 
@@ -3068,50 +3088,63 @@ print(
 )
 ```
 
+&nbsp;
+
+&nbsp;
+
 **Short General Conclusion on discussion 3:**  
 
-- Only a small share of professional landlords are meaningfully affected by a 40% council tax increase: **272 out of 8,849 listings** (about 3%) lose more than 10% of their profit.  
-- The impact is concentrated in outer London and lower-revenue boroughs, while high-revenue central boroughs show almost no effect.  
-- This suggests that a flat council tax rise is not a strong lever for changing professional Airbnb behaviour; more targeted measures based on revenue or the number of listings would be needed to shift the sector in any meaningful way.  
+- Only a small share of professional landlords are meaningfully affected by a 40% council tax increase:**272 out of 8,849** listings (about 3%) lose more than 10% of their profit. The impact is concentrated in outer London and lower-revenue boroughs, while high-revenue central boroughs show almost no effect. This suggests that a flat council tax rise is not a strong lever for changing professional Airbnb behaviour; more targeted measures based on revenue or the number of listings would be needed to shift the sector in any meaningful way.
 
 {{< pagebreak >}}
 
-# **Question 4: What are the likely pros and cons of the opposition’s proposal (for the Mayor, residents, and the city)?**
+# **Policy Analysis: Regulating Short-Term Lets for Housing Equity**
 
-The opposition suggests raising council tax for some Airbnb hosts and "professional landlords". Our analysis agrees that Airbnb is part of London's housing problem, but shows that this particular tool/method is uneven.  
-
-&nbsp;
-
-London is adding about 35k homes per year, while Airbnb adds 5–7.2k new listings a year – roughly 14–20% of annual housing output. A noticeable share of homes is being diverted to short-term lets rather than long-term housing. (@greaterlondonauthority)  
+1. **The Context: The Scale of the Problem**  
+Our analysis shows that Airbnb contributes to London’s housing shortage. London adds about **35,000 homes per year** (@greaterlondonauthority), **while Airbnb introduces 5,000–7,200 new listings annually (Q1)**. As a result, **14–20%** of new housing is absorbed by the short-term rental market.  
 
 &nbsp;
 
-Based on our findings, short-term letting is much more profitable than long-term renting, giving owners a clear financial incentive to convert units to Airbnb. (Finding From Q1)  
+2. **Critique of the Opposition’s Proposal**  
+The opposition proposes raising council tax for Airbnb hosts and "professional landlords." While this addresses the issue, our analysis data shows this approach is **blunt and inconsistent**.  
+- "Professional landlords" as such, with multiple listings, especially in central boroughs such as Westminster and Kensington & Chelsea, achieve higher profits. Even with a suggested **40% council tax increase (Q3)**, most high-revenue listings remain profitable.  
+- This “minimal” tax disproportionately impacts lower-revenue, casual hosts in outer boroughs who cannot absorb the cost, while failing to deter well-capitalised operators who most affect housing supply.  
 
 &nbsp;
 
-The problem is that "Professional landlords" have multiple entire-home listings and are active across the city, behaving like small hotel firms, not casual hosts. If we take the method of increasing council tax on professional landlords, we saw that under a simulated +40% council tax increase, most professional listings still make a healthy profit. The tax mainly bites lower-revenue hosts in outer boroughs, while high-revenue listings in central areas can easily absorb the change.  
+3. **The Better Alternative: Comprehensive Regulation**  
+Rather than relying solely on council tax, the Mayor should support the opposition’s intent while adopting a different approach. Effective policy that can address the market’s underlying mechanisms:  
+- **Registration and Enforcement**: Require strict host registration and impose penalties on non-compliant platforms.
+Primary Residence Rules: Adopt international standards, such as **New York’s Local Law 18**  (@nycose) and **Amsterdam’s 30-night cap** (@amsterdam), that require hosts to be primary residents.
+- **Smart Taxation**: Replace flat council tax increases with a combined **revenue-based and volume-based tax system** that targets high-yield portfolios (Q2).
+- **Supply Protection**: Ban short-term letting of council housing and newly built units.
 
 &nbsp;
 
-**Overall judgement:**  
+4. **Reframing the Narrative: Social Mobility and Opportunity**  
+Regulating Airbnb should be seen not just as a tax issue, but as a positive step for **social mobility and housing opportunity**. London Councils (2025) (-@londoncouncils) says that 24% of renters feel secure about continuing to live in the city, and 1 in 4 of them thinks they may need to leave the city to find more affordable rent in the next 12 months. In addition, Councillor Claire Holland claims:  
 
-We suggest that the Mayor should agree with the opposition but reject their tool; indicate a policy that would regulate host registration, enforce strict rental duration requirements, and implement primary-residence rules, with penalties for platforms and hosts that do not comply. We see these rules implemented in various cities around the world, such as New York with its Local Law 18 (@nycose) and Amsterdam with its 30-night cap and primary-residence requirement. (@amsterdam), as well as in Paris, Barcelona, and many more.  
+> *"London faces the most severe homelessness emergency in the country. Driven by the worsening shortage of affordable housing, far too many Londoners are struggling with their housing costs and at risk of becoming homeless".*
 
->*This policy can combine revenue-based and volume-based taxation, enforce registration across platforms, impose strict 90-day enforcement, and impose strict bans on letting council and newly built housing. This will get us closer to that international standard and far more likely to shift power away from high-earning professional landlords and back towards residents.*  
 
 {{< pagebreak >}}
 
-## **Effects of the opposition proposal for different actors**  
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
 &nbsp;
 &nbsp;
 &nbsp;
 
+\begin{center}
+\Large\bfseries
+Pros and Cons of the Council Tax Proposal
+\end{center}
+
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
 
 \vspace{0.5cm}
 \begin{center}
@@ -3172,7 +3205,6 @@ We suggest that the Mayor should agree with the opposition but reject their tool
     
     \textbf{\textcolor{IntelRed}{[-] TACTICAL RISKS}}
     \begin{itemize}
-        % --- 注意：这里已经修复了 & 符号 ---
         \item \textbf{Misaligned Targeting}: Policy targets tax bands rather than the root drivers (Revenue \& Portfolio Size).
     \end{itemize}
     \vspace{0.1cm}
@@ -3185,27 +3217,21 @@ We suggest that the Mayor should agree with the opposition but reject their tool
 
 {{< pagebreak >}}
 
-# **Question 5: Can the story be reframed as a positive one about social mobility or housing opportunity?**  
 
-Although the analysis shows that Airbnb contributes to the housing problem, its regulation can be seen as a tool for public benefit by increasing the supply of units and advancing social mobility goals. London Councils (2025) (-@londoncouncils) says that 24% of renters feel secure about continuing to live in the city, and 1 in 4 of them thinks they may need to leave the city to find more affordable rent in the next 12 months. In addition, Councillor Claire Holland claims:  
+Drawing on Dayne Lee’s study of the Los Angeles housing market (@DayneLee), this narrative shift could help see Airbnb regulation as an opportunity to prioritize residential stability in high-demand areas. Following this, policy measures can be justified by:
+- Protecting Communities: Preventing long-term rentals from becoming short-term lets helps safeguard against eviction and displacement.
+- Funding Affordability: Revenue from high-volume landlords should be redistributed to less privileged boroughs to support social housing programs.
+- Stopping Gentrification: Reducing the profitability of short-term lets slows neighbourhood change that displaces lower-income households from quality amenities.
 
->*"London faces the most severe homelessness emergency in the country. Driven by the worsening shortage of affordable housing, far too many Londoners are struggling with their housing costs and at risk of becoming homeless".*    
+## Implications for the Mayor
+In the context of the election, the opposition’s proposal could be seen as merely a response to individual misconduct, allowing the Mayor to shift the narrative to a broader, more powerful regulation in the collective interest. The strategy presented combines registration, regulation, and redistribution to less privileged areas of the city. This would show responsiveness from the current administration while addressing a structural issue about housing instability.  
 
-This limits social mobility by pushing lower-income households away from areas with high-quality amenities; however, Airbnb regulation could help address this.   
+&nbsp;
 
-Based on the findings, a proposal for a good Airbnb regulation should address the following:  
+This is key to the campaign's communication: it acknowledges public concern and leverages it. Doing this enables the Mayor to shift the debate from political blame to policy effectiveness, using data to justify a proportionate and socially equitable response.
 
-- Introduced a revenue and volume-based taxation system adjusted for landlords with high profitability and a large number of listings.  
-- Redistribute these funds to less privileged boroughs to expand social and affordable housing.  
-- Encourage landlords with big portfolios to commit a share to long-term affordable rent through targeted subsidies.  
 
-However, the city should also focus on preventing the future expansion of Airbnb units. For that, and based on the Los Angeles case studied by Dayne Lee (@DayneLee), the proposal should be complemented by:    
 
-- Preventing long-term rentals from being converted into the short-term rental market.  
-- Safeguarding tenants from evictions caused by long-term rental conversions.  
-- Reducing pressures that accelerate gentrification by mitigating further neighbourhood change.  
-
-The real problem is not only whether or not Airbnb is "out of control", but whether London is taking the right regulatory actions to help the city's wider housing and social mobility goals. The analysis shows that an increase in council tax alone would have only a limited effect. In contrast, more comprehensive regulatory legislation based on proper registration, enforcement, and targeted distribution would have a significant impact. This approach addresses the drivers of the problem, responds to public concern, and provides evidence and a basis to tackle the housing crisis in a socially equitable way.  
 
 
 
