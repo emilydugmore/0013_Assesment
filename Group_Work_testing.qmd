@@ -198,15 +198,18 @@ get_remote_file("Cover_2.png", img_url)
 {{< pagebreak >}}
 
 # **INTRODUCTION** 
-In the last few years, several cities across the world have experienced an explosive growth in Airbnb. What started as a shared economy platform for informal home-sharing has recently transformed into a major short-term rental market which fills the gap between traditional residential rental housing and hotel accommodation (@quattrone2016). While Airbnb advocates argue that the platform brings extra incomes to its users and new economic activities to cities, many raise concerns about its impact on housing markets through loss of housing supply, increased rent and gentrification (@mcgilluniversity).  
+In the last few years, several cities across the world have experienced an explosive growth in Airbnb. What started as a shared-economy platform for informal home-sharing has recently transformed into a primary short-term rental market, filling the gap between traditional residential rental housing and hotel accommodation (@quattrone2016).
 
-This report is motivated by claims that Airbnb is ‘out of control’ in London, and specifically addresses the recent proposal to force all professional landlords operating on the platform to register their properties and face higher Council Tax rates. Using comprehensive empirical analysis, we aim to answer five questions:  
+While Airbnb advocates argue that the platform brings additional income to its users and new economic activity to cities, many raise concerns about its impact on housing markets, including reduced housing supply, higher rents, and gentrification (@mcgilluniversity).
+
+This report is motivated by claims that Airbnb is ‘out of control’ in London, and specifically addresses the recent proposal by the opposition to force all professional landlords operating on the platform to register their properties and face higher Council Tax rates. Using comprehensive empirical analysis, we aim to answer three core questions:
+ 
 
 1.  Is Airbnb ‘out of control’ in London?  
 2.  How many professional landlords are there?  
 3.  How many properties would be affected by the proposal?  
-4.  What are the likely pros and cons of the proposal (for the Mayor, residents, and the city)?  
-5.  Is it possible that Airbnb is contributing positively to social mobility or housing opportunities?  
+
+Building on these findings, the final section offers a policy analysis of short-term let regulation and its implications for housing equity in London. 
 
 
 #### **Data and methodologies**
@@ -226,7 +229,7 @@ To determine the impact of Airbnb on the housing market, we use average monthly 
 ```{python}
 #output: false 
 # --- Part 01 Data Loading ---
-# The Work Mythology in Part 01 Data Loading and Initial Cleaning:
+# The Work Methodology in Part 01 Data Loading and Initial Cleaning:
 # Steps:
 # 1) Import Packages
 # 2) Ensuring Folder Structure, a main file named data, and subfolders: Raw and Clean.
@@ -248,6 +251,7 @@ import pandas as pd
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import numpy as np
+import mapclassify
 ```
 
 ```{python}
@@ -785,13 +789,10 @@ The histogram shows a clear surge in the number of new listings from 2021 onward
 # 8. Produce scatterplots comparing Airbnb monthly revenue and 
 #    private rents by bedroom category.
 #    Output: **Figure 03**
-# 9. Map the rent gap (Airbnb revenue / private rent) for two-bedroom units 
-#    across London boroughs.
-#    Output: **Figure 04**
-# 10. Zoom in on a high-pressure borough (e.g. Camden) to compare 
+# 9. Zoom in on a high-pressure borough (e.g. Camden) to compare 
 #     Airbnb revenue and private rent by unit size and illustrate 
 #     local rent gaps in more detail.
-#     Output: **Figure 05**
+#     Output: **Figure 04**
 ```
 
 ```{python}
@@ -937,8 +938,10 @@ count_all, count_inner = count_all.align(count_inner, fill_value=0)
 count_outer = count_all - count_inner
 
 
+fig, ax = plt.subplots(figsize=(10, 8))
+
 # 1. Inner London 
-plt.bar(
+ax.bar(
     count_inner.index.astype(str),
     count_inner.values,
     label="Inner London",
@@ -946,7 +949,7 @@ plt.bar(
 )
 
 # 2. Outer London 
-plt.bar(
+ax.bar(
     count_outer.index.astype(str),
     count_outer.values,
     label="Outer London",
@@ -954,31 +957,53 @@ plt.bar(
     bottom=count_inner.values 
 )
 
-
-plt.xlabel("Year", fontsize=12, fontweight='bold')
-plt.ylabel("Listings Added", fontsize=12, fontweight='bold')
-plt.title(
-    "Growth of Airbnb Listings: Inner vs Outer London", 
-    fontsize=14, 
-    fontweight='bold', 
+# Labels and title
+ax.set_xlabel("Year", fontsize=12, fontweight="bold")
+ax.set_ylabel("Listings Added", fontsize=12, fontweight="bold")
+ax.set_title(
+    "Growth of Airbnb Listings: Inner vs Outer London",
+    fontsize=14,
+    fontweight="bold",
     pad=20
 )
-plt.xticks(rotation=45, ha='right', fontsize=11)
-plt.yticks(fontsize=11)
-plt.legend(fontsize=12, loc='upper left', frameon=True, shadow=True)
 
-ax = plt.gca()
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
-plt.grid(axis="y", alpha=0.3)
+# Ticks
+ax.set_xticklabels(count_inner.index.astype(str), rotation=45, ha="right", fontsize=11)
+ax.tick_params(axis="y", labelsize=11)
+
+# Legend
+ax.legend(fontsize=12, loc="upper left", frameon=True, shadow=True)
+
+# Clean style
+ax.spines["top"].set_visible(False)
+ax.spines["right"].set_visible(False)
+ax.grid(axis="y", alpha=0.3)
+
+# Credit / source note
+credit_text = (
+    "Source: Inside Airbnb (2025); "
+    "London Plan Annual Monitoring Report 19 (2021/22)"
+)
+
+fig.text(
+    0.1, -0.02,
+    credit_text,
+    ha="left",
+    va="top",
+    fontsize=9,
+    color="grey"
+)
+
 plt.tight_layout()
 plt.show()
 
 # ---- Output data ----
-# df_inner: A df containing listings located only in the boroughs of Inner London
+# df_inner: A dataframe containing listings located only in the boroughs of Inner London
+
 # ---- Output Figure ----
-# Figure 01: Histogram of the Growth of Airbnb Listings over the years
-#            (all London vs Inner London) to see the impact on Inner London, where the housing demand is much higher.
+# Figure 01: Growth of Airbnb Listings over time (Inner vs Outer London),
+# illustrating the concentration of new listings in Inner London,
+# where housing demand is significantly higher.
 ```
 
 **Summary Figure 1.1**  
@@ -997,16 +1022,23 @@ listings_sjoin.columns
 ```{python}
 # Step 04: Percentage of full-time listings out of total households by MSOA
 
-# Produce a normalised indicator of Airbnb intensity by calculating the proportion of full-time, entire-home listings relative to the total number of households in each MSOA. 
-#This allows comparison across areas with different population sizes and reveals where Airbnb activity may exert stronger pressure on local housing supply.
+# Produce a normalised indicator of Airbnb intensity by calculating the proportion of full-time, entire-home listings relative to the total number of households in each MSOA. #This allows comparison across areas with different population sizes and reveals where Airbnb activity may exert stronger pressure on local housing supply. 
+
+
 # Count how many listings fall in each MSOA
 listing_counts = listings_sjoin.groupby("msoa11nm").size()
 
-# Merge the MSOA geometry from the GeoPackage with the household data so that each polygon includes the number of households in that area.
-msoa_merged = msoa.merge(housing, left_on="msoa11nm", right_on="msoa_name")
-msoa_merged = msoa_merged[["msoa_name", "households_2011all_households", "geometry"]]
+# Merge MSOA geometry with household data
+msoa_merged = msoa.merge(
+    housing,
+    left_on="msoa11nm",
+    right_on="msoa_name"
+)[["msoa_name", "households_2011all_households", "geometry"]]
+
+# Reproject to British National Grid
 msoa_merged = msoa_merged.to_crs(epsg=27700)
-# Merge the listing counts back into the MSOA GeoDataFrame
+
+# Merge listing counts
 msoa_merged = msoa_merged.merge(
     listing_counts.reset_index(name="listing_counts"),
     left_on="msoa_name",
@@ -1014,37 +1046,114 @@ msoa_merged = msoa_merged.merge(
     how="left"
 )
 
-# Calculate the percentage of Airbnb listings relative to households per MSOA
-msoa_merged["percentage"] = (msoa_merged["listing_counts"] / msoa_merged["households_2011all_households"]*100)
+# Replace missing listings with 0
+msoa_merged["listing_counts"] = msoa_merged["listing_counts"].fillna(0)
+
+# Calculate percentage of Airbnb listings relative to households
+msoa_merged["percentage"] = (
+    msoa_merged["listing_counts"]
+    / msoa_merged["households_2011all_households"]
+    * 100
+)
 
 
-#Plot map 
+# Inner London outline
+
+# Ensure boroughs are in same CRS
+borough = borough.to_crs(epsg=27700)
+
+borough_inner = borough[
+    borough["district"].isin(inner_london)
+].copy()
+
+inner_london_outline = borough_inner.dissolve()
+inner_london_outline = inner_london_outline.to_crs(msoa_merged.crs)
+
+# Plot map
 
 fig, ax = plt.subplots(1, 1, figsize=(10, 8))
 
+# MSOA choropleth FIRST
 msoa_merged.plot(
     ax=ax,
     column="percentage",
     cmap="OrRd",
     scheme="NaturalBreaks",
     k=5,
-    linewidth=0,
+    linewidth=0.2,
+    edgecolor="lightgrey",
     legend=True,
     legend_kwds={
-    "title": "",
-    "fmt": "{:,.0f}"  # string, not method
-}
+        "title": "Full-time Airbnb listings\n(% of households)",
+        "fmt": "{:.0f}"
+    }
 )
 
-# Make it look cleaner
-ax.set_axis_off()
-ax.set_title("Percentage of fulltime listings out of total households by MSOA", fontsize=12)
+# Inner London outline ON TOP
+inner_london_outline.plot(
+    ax=ax,
+    facecolor="none",
+    edgecolor="darkgrey",
+    linewidth=0.7
+)
 
+# Real grid (OS National Grid – 5 km)
+xmin, xmax = ax.get_xlim()
+ymin, ymax = ax.get_ylim()
+
+grid_spacing = 10000  # 10 km
+
+ax.set_xticks(np.arange(xmin, xmax, grid_spacing))
+ax.set_yticks(np.arange(ymin, ymax, grid_spacing))
+
+ax.grid(
+    color="grey",
+    linestyle=":",
+    linewidth=0.5,
+    alpha=0.6
+)
+
+# Hide tick labels but keep grid
+ax.tick_params(
+    labelbottom=False,
+    labelleft=False,
+    bottom=False,
+    left=False
+)
+
+# Remove outer black frame (axes spines)
+for spine in ax.spines.values():
+    spine.set_visible(False)
+
+# Clean legend box
+leg = ax.get_legend()
+leg.get_frame().set_linewidth(0)
+leg.get_frame().set_facecolor("none")
+
+# Layout
+ax.set_title(
+    "Percentage of Full-time Airbnb Listings Relative to Total Households by MSOA",
+    fontsize=13,
+    fontweight="bold",
+    pad=12
+)
+
+fig.text(
+    0.00, -0.02,
+    "Source: Inside Airbnb (2025); Office for National Statistics (2024).",
+    ha="left",
+    va="top",
+    fontsize=9,
+    color="grey"
+)
+
+plt.tight_layout()
 plt.show()
 
 # ---- Output Figure ----
-# Figure 02: Choropleth map visualising the percentage of full-time Airbnb 
-#            entire-home listings relative to total households per MSOA.
+# Figure 02: Choropleth map visualising the percentage of full-time Airbnb
+# entire-home listings relative to total households per MSOA, highlighting
+# the concentration of Airbnb activity within Inner London.
 ```
 
 **Summary Figure 1.2**   
@@ -1276,6 +1385,8 @@ revenue_airbnb_rent.head()
 #| fig-height: 6   
 
 # Step 08: 2x3 Layout (5 plots)
+
+# Dictionary linking categories to column names
 categories = {
     "Studio": ("studio_rent", "studio_airbnb"),
     "1-Bed": ("one_bedroom_rent", "one_bedroom_airbnb"),
@@ -1317,11 +1428,24 @@ for i, (cat, (rent_col, airbnb_col)) in enumerate(categories.items()):
     ax.set_title(cat, fontsize=11, fontweight='bold')
     ax.grid(alpha=0.3)
 
+# Credit / source note
+fig.text(
+    0.1, -0.02,
+    "Source: Inside Airbnb (2025); Office for National Statistics (2024).",
+    ha="left",
+    va="top",
+    fontsize=9,
+    color="grey"
+)
+
 
 fig.delaxes(axes_flat[5])
 plt.suptitle("Airbnb Revenue vs Private Rent by Bedroom Category", fontsize=18)
 plt.tight_layout()
 plt.show()
+
+# ---- Output figure ----
+#  Figure 03: Scatterplot Airbnb Revenue vs Private Rent by Bedroom Category
 ```
 
 **Summary Figure 1.3**   
@@ -1362,53 +1486,14 @@ for cat, (rent_col, airbnb_col) in categories.items():
 slopes
 ```
 
-## **Figure 1.4** | Rent Gap (Airbnb vs Private Rent) Two Bedroom Units
 
-```{python}
-# Step 10: Map the rent gap (Airbnb revenue / private rent) for two-bedroom units 
-#    across London boroughs.
-# The rent gap is calculated as the ratio between the average monthly
-# Airbnb revenue and average private rent for the same unit size.
-# Values > 1 indicate that Airbnb is more profitable than renting 
-# long-term, revealing boroughs where incentives to convert homes 
-# into short-term rentals are strongest.
-
-# Calculate the rent gap for three-bedroom units
-revenue_airbnb_rent["rentgap_three_bedroom"] = (
-    revenue_airbnb_rent["three_bedroom_airbnb"] /
-    revenue_airbnb_rent["three_bedroom_rent"]
-)
-
-# Plot the spatial distribution of the rent gap
-revenue_airbnb_rent.plot(
-    column="rentgap_three_bedroom",
-    cmap="OrRd",
-    scheme="Quantiles",
-    k=5,
-    linewidth=0.5,
-    edgecolor="white",
-    legend=True,
-    figsize=(10,10)
-)
-plt.title("Rent Gap (Airbnb vs Private Rent) – Two Bedroom Units", fontsize=12)
-plt.axis("off")
-plt.show()
-
-# ---- Output figure ----
-#  Figure 04: Cloropeth map of Rent Gap (airbnb vs private rent) in two-bedroom units
-```
-
-**Summary Figure 1.4**  
-
-- This map shows the spatial distribution of the rent gap—defined as the ratio between Airbnb monthly revenue and private rent—for two-bedroom units across London boroughs. The pattern is concentrated in central and high-demand boroughs, suggesting greater market pressure on family-sized housing in these areas.  
-- Boroughs are very large areas, and the rent gap can change a lot inside the same borough. So this map shows the general pattern, but not the smaller local differences.  
 
 {{< pagebreak >}}
 
-## **Figure 1.5** | Rent gap in Camden, by bedroom category
+## **Figure 1.4** | Rent gap in Camden, by bedroom category
 
 ```{python}
-# Step 11: Zoom in on a high-pressure borough, Camden in this case, to compare 
+# Step 09: Zoom in on a high-pressure borough, Camden in this case, to compare 
 #     Airbnb revenue and private rent by unit size and illustrate 
 #     local rent gaps in more detail.
 
@@ -1468,13 +1553,44 @@ plt.legend(
 )
 plt.grid(axis="y", alpha=0.3)
 
+# Credit / source note
+credit_text = (
+    "Source: Inside Airbnb (2025); Office for National Statistics (2024)"
+)
+
+fig = plt.gcf()
+fig.text(
+    0.05, -0.01,
+    credit_text,
+    ha="left",
+    va="top",
+    fontsize=9,
+    color="grey"
+)
+
+# Credit / source note
+credit_text = (
+    "Source: Inside Airbnb (2025)"
+)
+
+fig = plt.gcf()
+fig.text(
+    0.05, -0.01,
+    credit_text,
+    ha="left",
+    va="top",
+    fontsize=9,
+    color="grey"
+)
+
+
 plt.tight_layout()
 plt.show()
 
 
 
 # ---- Output figure ----
-#  Figure 05: Scatterplot Airbnb Revenue vs Private Rent by Bedroom Category 
+#  Figure 05: Bar graph of Airbnb vs Private Rent by Bedroom category in Camden Borough 
 ```
 
 
@@ -1864,14 +1980,14 @@ ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False) 
 
 # 2. 
-ax.set_xlabel("NUMBER OF LISTINGS PER HOST", 
+ax.set_xlabel("Number of listings per host", 
               loc='left', 
               fontsize=10, fontweight='bold')
-ax.set_ylabel("FREQUENCY OF HOSTS (LOG)", 
+ax.set_ylabel("Frequency of hosts (LOG)", 
               loc='top', 
               fontsize=10, fontweight='bold')
 
-# 3. 标
+# 3. 
 ax.set_title("Histogram of Listings per Professional Host", 
              fontsize=12, fontweight='bold', pad=15)
 
@@ -1965,10 +2081,10 @@ ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False) 
 
 
-ax.set_xlabel("TOTAL ESTIMATED REVENUE PER HOST", 
+ax.set_xlabel("Total estimated revenue per host", 
               loc='left', 
               fontsize=10, fontweight='bold')
-ax.set_ylabel("FREQUENCY OF HOSTS (LOG)", 
+ax.set_ylabel("Frequency of hosts (LOG)", 
               loc='top', 
               fontsize=10, fontweight='bold')
 
@@ -1978,6 +2094,22 @@ ax.set_title("Distribution of Total Estimated Revenue (Professional Hosts)",
 
 
 ax.tick_params(axis='both', labelsize=10) 
+
+# Credit / source note
+credit_text = (
+    "Source: Inside Airbnb (2025)"
+)
+
+fig = plt.gcf()
+fig.text(
+    0.05, -0.01,
+    credit_text,
+    ha="left",
+    va="top",
+    fontsize=9,
+    color="grey"
+)
+
 
 plt.tight_layout()
 plt.show()
@@ -2090,6 +2222,21 @@ plt.subplots_adjust(
     bottom=0.01  
 )
 
+# Credit / source note
+credit_text = (
+    "Source: Inside Airbnb (2025)"
+)
+
+fig = plt.gcf()
+fig.text(
+    0.05, -0.01,
+    credit_text,
+    ha="left",
+    va="top",
+    fontsize=9,
+    color="grey"
+)
+
 # plt.tight_layout()  
 plt.show()
 # ---- Output Data -----
@@ -2104,7 +2251,7 @@ plt.show()
 # Finding if the number of listings per professional host is correlated with being a "superhost"
 # Create a strip plot
 
-import seaborn as sns
+
 
 plt.figure(figsize=(10,5))
 
@@ -2128,11 +2275,26 @@ ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
 
 
-ax.set_xlabel("NUMBER OF LISTINGS PER HOST", loc='center', fontsize=10, fontweight='bold')
-ax.set_ylabel("SUPERHOST CONDITION", loc='center', fontsize=10, fontweight='bold')
+ax.set_xlabel("Number of listings per Host", loc='center', fontsize=10, fontweight='bold')
+ax.set_ylabel("Superhost condition", loc='center', fontsize=10, fontweight='bold')
 
 
 ax.tick_params(axis='both', labelsize=10)
+
+# Credit / source note
+credit_text = (
+    "Source: Inside Airbnb (2025)"
+)
+
+fig = plt.gcf()
+fig.text(
+    0.05, -0.01,
+    credit_text,
+    ha="left",
+    va="top",
+    fontsize=9,
+    color="grey"
+)
 
 plt.gca().legend_.remove()
 ax.set_title("Correlation between the superhost condition and the number of listings")
@@ -2183,7 +2345,7 @@ This question looks at **professional full-time entire-home Airbnb listings only
 
 ```{python}
 #| output: false 
-# -- The Work Mythology For evaluating How many properties would be affected by the opposition’s proposal:--
+# -- The Work Methodology For evaluating How many properties would be affected by the opposition’s proposal:--
 # Steps Overview:
 # 1. Cleaning and aligning the Council Tax CSV to prepare for a merge.
 # 2. Merge Council Tax Into Borough Shapefile.
@@ -2406,6 +2568,14 @@ display(borough_summary.head())
 # Convert borough names to Title for neat labels.
 x_labels = borough_summary['borough_name'].str.title().tolist()
 
+short_labels = [
+    lbl.replace(" And ", " & ")
+       .replace("Royal Borough Of ", "")
+       .replace("City & County Of The ", "")
+       .replace(" Upon ", " u. ")
+    for lbl in x_labels
+]
+
 # Create a numeric position for each borough on the x-axis.
 x_pos = np.arange(len(x_labels))
 
@@ -2422,7 +2592,7 @@ rev_line = ax1.plot(
     x_pos,
     rev_vals,
     marker='o',
-    color='tab:purple',
+    color="#720000",
     label='Avg annual Airbnb revenue.'
 )[0]
 
@@ -2440,7 +2610,7 @@ tax_line = ax2.plot(
     tax_vals,
     marker='s',
     linestyle='--',
-    color='tab:orange',
+    color="#000042",
     label='Avg council tax (Band D)'
 )[0]
 
@@ -2469,6 +2639,23 @@ ax1.legend(
     loc='upper right'
 )
 
+# Combined legend placed above plot
+lines = [rev_line, tax_line]
+labels = [l.get_label() for l in lines]
+
+ax1.legend(
+    lines,
+    labels,
+    loc="upper center",
+    bbox_to_anchor=(0.5, -0.35),
+    ncol=2,
+    frameon=False,
+    fontsize=9
+)
+
+# Layout fix
+plt.tight_layout(rect=[0, 0, 1, 0.88])
+
 # Final layout and title 
 plt.title(
     'Average Airbnb Revenue vs Average Council Tax per Borough\n'
@@ -2476,7 +2663,20 @@ plt.title(
     fontsize=18,       
     pad=15             
 )
+# Credit / source note
+credit_text = (
+    "Source: Inside Airbnb (2025) and London DataStore (2022)"
+)
 
+fig = plt.gcf()
+fig.text(
+    0.05, -0.01,
+    credit_text,
+    ha="left",
+    va="top",
+    fontsize=9,
+    color="grey"
+)
 plt.tight_layout()
 # plt.show() 
 
@@ -2775,7 +2975,23 @@ if len(x) > 1:
         '(99th percentile trimmed, simple fitted line)'
     )
     ax.set_ylim(0, max(y.max() * 1.1, 0.5))
-    plt.tight_layout()
+
+# Credit / source note
+credit_text = (
+    "Source: Inside Airbnb (2025) and London DataStore (2022)"
+)
+
+fig = plt.gcf()
+fig.text(
+    0.05, -0.01,
+    credit_text,
+    ha="left",
+    va="top",
+    fontsize=9,
+    color="grey"
+)
+
+plt.tight_layout()
     # No plt.show() needed, Quarto will capture the figure
 ```
 
