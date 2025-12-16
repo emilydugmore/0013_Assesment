@@ -66,7 +66,7 @@ jupyter:
 ---
 
 \begin{titlepage}
-    % 使用 AddToShipoutPictureBG* 
+    % AddToShipoutPictureBG* 
     \AddToShipoutPictureBG*{%
         \AtPageLowerLeft{%
             \includegraphics[width=\paperwidth,height=\paperheight]{cover.png}%
@@ -90,7 +90,17 @@ jupyter:
     \textbf{\texttt{>> SECTION 1: INTEGRITY PLEDGE}} \\
     \hline
     \small
-    \textit{We, "TNE$^2$ + I", pledge our honour that the work presented in this assessment is our own. Where information has been derived from other sources, we confirm that this has been indicated in the work. AI contributions have been clearly documented.} \\
+    \textit{We, "TNE$^2$ + I", pledge our honour that the work presented in this assessment is our own. Where information has been derived from other sources, we confirm that this has been indicated in the work. 
+
+AI Acknowledgement Statement
+
+This work made limited use of generative artificial intelligence tools (ChatGPT, Gemini) as a supporting aid during the research and writing process. Specifically, AI assistance was used to:
+
+•⁠  ⁠support the homogenisation and technical refinement of written commentary, ensuring clarity, consistency, and appropriate academic tone across sections;
+
+•⁠  ⁠assist with debugging and troubleshooting of code, particularly for data processing and visualisation workflows in Python;
+
+•⁠  ⁠provide guidance on improving graphical outputs and data visualisations.} \\
     \\
     \textbf{TIMESTAMP:} \today \\
     \hline
@@ -130,6 +140,7 @@ jupyter:
     \textbf{\texttt{*** END OF DOSSIER HEADER ***}}
 \end{center}
 \newpage
+
 
 
 
@@ -211,7 +222,7 @@ This report is motivated by claims that Airbnb is ‘out of control’ in London
 
 Building on these findings, the final section offers a policy analysis of short-term let regulation and its implications for housing equity in London. 
 
-#### **Data and methodologies**
+# **DATA AND METHODOLOGIES**
 
 **Inside Airbnb Data**
 
@@ -226,6 +237,8 @@ Our investigation uses listing data collected by Inside Airbnb – an independen
 * **Inside Airbnb Model:** although we use the estimated occupancy and revenue generated from the IA occupancy model (@insideairbnb). As a measure of occupancy, this list is filtered and has fewer listings due to Airbnb's internal filtering.
 
 * **Coordinates:** The coordinates are shifted by 150m in a random direction from the listing's actual address. Listings near borough boundaries may have been moved to a different borough, which may affect the precision of the results.
+
+{{< pagebreak >}}
 
 **Administrative level data**
 
@@ -936,9 +949,6 @@ df_inner = listings_sjoin[
 count_all = listings_sjoin[listings_sjoin["year_first_review"] != 2025]["year_first_review"].value_counts().sort_index()
 count_inner = df_inner[df_inner["year_first_review"] != 2025]["year_first_review"].value_counts().sort_index()
 
-
-# Plot: Airbnb listings added per year in All London vs Inner London
-plt.figure(figsize=(11, 6)) #
 
 # MI6 
 mi6_red = '#8B0000'    # Inner London (The "Threat")
@@ -1992,7 +2002,7 @@ Building on this analysis, we aim to assess the scale at which these landlords o
 To achieve this, we will:
 
 - **Revenue:** Estimate the annual revenue generated per host. 
--**Location:** Map the spatial distribution of the top six professional landlords by number of listings.
+- **Location:** Map the spatial distribution of the top six professional landlords by number of listings.
 - **Quality:** Assess whether the number of listings per professional landlord correlates with achieving "Superhost" status, which may indicate higher service quality.  
 
 According to Airbnb (@airbnbhelpcenter), Superhost requirements include:
@@ -2289,16 +2299,6 @@ else:
     p_value_text = f"p = {p_value:.3f}"
 ```
 
-
-&nbsp;
-&nbsp;
-
-
-
-
-&nbsp;
-
-&nbsp;
 
 
 **Key Insights:** The analysis above (sections 2.2, 2.3, and 2.4) reveals that the top six professional landlords are distributed throughout London, with notable clusters in central locations and high-value boroughs. This spatial pattern, combined with portfolio size and total estimated revenue, suggests that many of these hosts operate as commercial businesses rather than individuals simply sharing their homes, as Airbnb originally intended.
@@ -3267,7 +3267,7 @@ Rather than relying solely on council tax, the Mayor should support the oppositi
 3. Smart Taxation: Replace flat council tax increases with a combined revenue-based and volume-based tax system that targets high-yield portfolios (Q2).
 4. Supply Protection: Ban short-term letting of council housing and newly built units.
 
-4. **Reframing the Narrative: Social Mobility and Opportunity**  
+**Reframing the Narrative: Social Mobility and Opportunity**  
 
 Regulating Airbnb should be seen not just as a tax issue, but as a positive step for social mobility and housing opportunity. London Councils (2025) (@londoncouncils) says that 24% of renters feel secure about continuing to live in the city, and 1 in 4 of them thinks they may need to leave the city to find more affordable rent in the next 12 months. In addition, Councillor Claire Holland claims:
 
